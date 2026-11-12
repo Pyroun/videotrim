@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1020">
+    <title>SarayBelly — 動画トリマー</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="SarayBelly home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3.5v11m0 0 4-4m-4 4-4-4M5 16v3.5h14V16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>SarayBelly<span class="brand-dot">.</span></span>
+        </a>
+        <div class="topbar-actions">
+          <span class="topbar-note"><span class="status-dot"></span><span id="local-note">PC内で動画を処理</span></span>
+          <label class="language-picker">
+            <span class="visually-hidden" id="language-label">表示言語</span>
+            <select id="language-select" aria-labelledby="language-label">
+              <option value="ja">日本語</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <section class="hero">
+        <h1 id="headline">残したい瞬間を。<br><span>かんたん切り出し。</span></h1>
+        <p class="intro" id="intro">PCから動画を選び、長さを指定してプレビュー。完成した動画をMP4で保存できます。</p>
+
+        <section class="trim-card" id="trim-card" aria-label="動画トリミングツール">
+          <label class="field-label" id="upload-label" for="video-file">PCから動画を選択</label>
+          <label class="file-picker" for="video-file">
+            <span class="upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 15V4m0 0L8 8m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="file-copy">
+              <strong id="file-name" data-empty-label="動画ファイルを選択してください">動画ファイルを選択してください</strong>
+              <small id="file-hint">MP4、MOV、MKV、WebM、AVI など</small>
+            </span>
+            <span class="browse-button" id="browse-label">ファイルを選択</span>
+          </label>
+          <input class="visually-hidden" id="video-file" type="file" accept="video/*,.mkv,.avi,.wmv,.flv,.mpeg,.mpg,.3gp">
+
+          <video class="source-preview hidden" id="source-preview" controls playsinline></video>
+          <div class="video-info hidden" id="video-info"></div>
+
+          <div class="trim-options">
+            <div class="option-block">
+              <label class="field-label" id="length-label" for="clip-length">切り出す長さ</label>
+              <div class="select-wrap">
+                <select id="clip-length">
+                  <option value="30">30 秒</option>
+                  <option value="60">60 秒</option>
+                  <option value="custom">自由に指定</option>
+                </select>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="option-block">
+              <label class="field-label" id="start-label" for="start-time">開始位置（秒）</label>
+              <input class="number-input" id="start-time" type="number" min="0" step="0.1" value="0">
+            </div>
+            <div class="option-block custom-length hidden" id="custom-length-wrap">
+              <label class="field-label" id="custom-length-label" for="custom-seconds">切り出す長さ（秒）</label>
+              <input class="number-input" id="custom-seconds" type="number" min="1" step="0.1" value="15">
+            </div>
+          </div>
+
+          <button class="primary-button" id="trim-button" type="button" disabled>
+            <span id="trim-button-label">トリミングしてプレビュー</span>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+
+          <section class="result hidden" id="result">
+            <div class="result-heading">
+              <div>
+                <span class="field-label" id="result-label">切り出しプレビュー</span>
+                <strong id="result-ready">MP4の準備ができました</strong>
+              </div>
+              <span class="format-badge">MP4</span>
+            </div>
+            <video id="result-preview" controls playsinline></video>
+            <button class="save-button" id="save-button" type="button">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v10m0 0 3.5-3.5M10 13l-3.5-3.5M4 14v3h12v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span id="save-button-label">保存先を選んでMP4を保存</span>
+            </button>
+            <span class="save-hint" id="save-hint">保存先を選択してください。</span>
+          </section>
+        </section>
+      </section>
+
+      <footer><span id="footer-note">動画処理はこのPC内で完結します。API利用料やサブスクリプションは不要です。</span></footer>
+    </main>
+  </body>
+</html>
